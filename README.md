@@ -1,73 +1,165 @@
-# Welcome to your Lovable project
+# VOICE BOT 
 
-## Project info
+> **How to Change Agent ID, Google Client ID, and Other Credentials**
+>
+> - **Google Client ID:**
+>   - Go to `src/services/googleAuth.ts`.
+>   - Find the `client_id` parameter in the `initialize` method or where Google Auth is configured.
+>   - Replace the existing Client ID with your own from the [Google Cloud Console](https://console.cloud.google.com/).
+>
+> - **Agent ID and Other Credentials:**
+>   - If your project uses an Agent ID or other API credentials, locate them in the configuration files or environment variables (commonly in `src/services/`, `.env`, or similar files).
+>   - Update these values as needed for your deployment or environment.
+>
+> **Remember:** After changing credentials, restart your development server for changes to take effect.
 
-**URL**: https://lovable.dev/projects/763e0e79-77bd-4bd3-a0e3-0c3140092178
+---
 
-## How can I edit this code?
+A modern, responsive web application built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**.  
+This project features Google Authentication for secure sign-in.
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## Repository
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/763e0e79-77bd-4bd3-a0e3-0c3140092178) and start prompting.
+This project is hosted on GitHub:  
+[https://github.com/Kabilan21052004/voice-bot](https://github.com/Kabilan21052004/voice-bot)
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- ⚡ **Vite** for fast development and build
+- ⚛️ **React** with **TypeScript** for robust UI
+- 🎨 **Tailwind CSS** for utility-first styling
+- 🔒 **Google Authentication** (OAuth2, People API)
+- 🧩 Modular, reusable UI components
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## Tool Integrations (for ElevenLabs or n8n)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+This project is designed to work with the following webhook/client tools for user management and conversation tracking. These should be set up in your automation platform (such as ElevenLabs or n8n):
+NOTE : REPLACE THE WEBHOOK URL WITH YOUR WEBHOOK URL
+### 1. `check_user`
+- **Type:** Webhook (POST)
+- **Endpoint:** `https://kabilan2004.app.n8n.cloud/webhook/check_user`
+- **Purpose:** Check if a customer exists using their email address.
+- **Request Body:**
+  - `user_email` (string, required): The email ID of the user (retrieved via `get_user_email`).
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 2. `get_conversation_history`
+- **Type:** Webhook (POST)
+- **Endpoint:** `https://kabilan2004.app.n8n.cloud/webhook/get-conversations`
+- **Purpose:** Retrieve the past conversation history for a user.
+- **Request Body:**
+  - `user_email` (string, required): The authenticated user's email address from Google OAuth.
 
-# Step 3: Install the necessary dependencies.
-npm i
+### 3. `store_conversation`
+- **Type:** Webhook (POST)
+- **Endpoint:** `https://kabilan2004.app.n8n.cloud/webhook/store-conversation`
+- **Purpose:** Store a conversation with user email for future reference and personalization.
+- **Request Body:**
+  - `conversation_id` (string, required): Unique session identifier for this conversation.
+  - `user_email` (string, required): The authenticated user's email address from Google OAuth.
+  - `phone_number` (string, required): The contact number of the user.
+  - `conversation_content` (string, required): Complete conversation transcript including user messages and AI responses.
+  - `timestamp` (string, required): ISO 8601 formatted timestamp of when conversation occurred.
+  - `action` (string, required): Action to perform: 'store' or 'get'.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+### 4. `get_user_email`
+- **Type:** Client
+- **Purpose:** Retrieves the email address and phone number of the authenticated user from Google Auth.
+- **Parameters:** None (uses current Google Auth session).
+
+**Note:**
+- These tools are essential for user authentication, conversation storage, and retrieval in this project.
+- Make sure to configure these endpoints and their schemas in your automation platform as described above.
+
+---
+
+## Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Kabilan21052004/voice-bot.git
+cd voice-bot
 ```
 
-**Edit a file directly in GitHub**
+### 2. Install Dependencies
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm install
+# or
+yarn install
+# or
+bun install
+```
 
-**Use GitHub Codespaces**
+### 3. Start the Development Server
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+bun run dev
+```
 
-## What technologies are used for this project?
+The app will be available at [http://localhost:5173](http://localhost:5173) (or the port shown in your terminal).
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Google Authentication Setup
 
-## How can I deploy this project?
+1. Create a project in the [Google Cloud Console](https://console.cloud.google.com/).
+2. Enable the **Google Identity Services** and **People API**.
+3. Set up OAuth 2.0 credentials and get your **Client ID**.
+4. Update your app to use your Google Client ID (see `src/services/googleAuth.ts`).
 
-Simply open [Lovable](https://lovable.dev/projects/763e0e79-77bd-4bd3-a0e3-0c3140092178) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+## Project Structure
 
-Yes, you can!
+```
+voice-bot/
+├── public/                 # Static assets
+├── src/
+│   ├── components/         # React components
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utility functions
+│   ├── pages/              # Page components
+│   ├── services/           # API and auth services
+│   └── index.css           # Global styles
+├── package.json
+├── tailwind.config.ts
+├── vite.config.ts
+└── README.md
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Scripts
+
+- `dev` - Start development server
+- `build` - Build for production
+- `preview` - Preview production build
+
+---
+
+## License
+
+[MIT](LICENSE)  
+© 2025 Your Name
+
+---
+
+## Acknowledgements
+
+- [Vite](https://vitejs.dev/)
+- [React](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Google Identity Services](https://developers.google.com/identity)
+
+---
