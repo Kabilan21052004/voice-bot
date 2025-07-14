@@ -37,9 +37,9 @@ This project is hosted on GitHub:
 
 ---
 
-## Tool Integrations (for ElevenLabs or n8n)
+## Tool Integrations (for ElevenLabs)
 
-This project is designed to work with the following webhook/client tools for user management and conversation tracking. These should be set up in your automation platform (such as ElevenLabs or n8n):
+This project is designed to work with the following webhook/client tools for user management and conversation tracking. These should be set up in your automation platform (such as ElevenLabs ):
 NOTE : REPLACE THE WEBHOOK URL WITH YOUR WEBHOOK URL
 ### 1. `check_user`
 - **Type:** Webhook (POST)
