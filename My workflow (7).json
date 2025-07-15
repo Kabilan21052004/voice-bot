@@ -1,0 +1,174 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "schedule meet",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -300,
+        -20
+      ],
+      "id": "0413b94d-fff3-4bc7-8e3b-c6aec0c17bf9",
+      "name": "Webhook",
+      "webhookId": "fa167c94-6580-48f4-8fa2-6283d89a985f"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "ravichandrankabilan@gmail.com",
+          "mode": "list",
+          "cachedResultName": "ravichandrankabilan@gmail.com"
+        },
+        "start": "={{ $json.body.date }} {{ $json.body.time }}",
+        "end": "={{ DateTime.fromFormat($json.body.date + ' ' + $json.body.time, 'yyyy-MM-dd HH:mm').plus({ minutes: $json.body.duration }).toFormat('yyyy-MM-dd HH:mm') }}",
+        "additionalFields": {
+          "summary": "={{ $json.body.title }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        -20
+      ],
+      "id": "14f32f63-2f91-482d-b801-832f9944faa2",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "aCZr9rRe6P9KaLke",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        380,
+        -20
+      ],
+      "id": "610b4ef5-cfd2-4a28-8e97-a2ac9e33b457",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.organizer.email }}",
+        "subject": "Meeting scheduled",
+        "message": "=<html>\n<head>\n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            line-height: 1.6;\n            color: #333;\n            max-width: 600px;\n            margin: 0 auto;\n            padding: 20px;\n        }\n        .header {\n            background-color: #4285f4;\n            color: white;\n            padding: 20px;\n            text-align: center;\n            border-radius: 8px 8px 0 0;\n        }\n        .content {\n            background-color: #f9f9f9;\n            padding: 20px;\n            border: 1px solid #ddd;\n        }\n        .meeting-details {\n            background-color: white;\n            padding: 15px;\n            border-radius: 5px;\n            margin: 15px 0;\n            border-left: 4px solid #4285f4;\n        }\n        .button {\n            display: inline-block;\n            background-color: #4285f4;\n            color: white;\n            padding: 12px 25px;\n            text-decoration: none;\n            border-radius: 5px;\n            margin: 15px 0;\n            font-weight: bold;\n        }\n        .footer {\n            text-align: center;\n            font-size: 12px;\n            color: #666;\n            margin-top: 20px;\n            padding-top: 20px;\n            border-top: 1px solid #ddd;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"header\">\n        <h2>📅 Meeting Scheduled Successfully!</h2>\n    </div>\n    \n    <div class=\"content\">\n        <p>Hi there,</p>\n        \n        <p>Your meeting has been successfully scheduled. Here are the details:</p>\n        \n        <div class=\"meeting-details\">\n            <h3>Meeting Details</h3>\n            <p><strong>Start:</strong> {{ $json.start.dateTime }}</p>\n            <p><strong>End:</strong> {{ $json.end.dateTime }}</p>\n            <p><strong>Status:</strong> {{ $json.status }}</p>\n            <p><strong>Event ID:</strong> {{ $json.id }}</p>\n            <p><strong>Created:</strong> {{ $json.created }}</p>\n        </div>\n        \n        <p>The meeting has been added to your Google Calendar. You can view it by clicking the link below:</p>\n        \n        <a href=\"{{ $json.htmlLink }}\" class=\"button\">📅 View in Google Calendar</a>\n        \n        <p>If you need to make any changes to this meeting, please contact us or update it directly in your calendar.</p>\n        \n        <p>Best regards,<br>\n        Meeting Scheduler Team</p>\n    </div>\n    \n    <div class=\"footer\">\n        <p>This is an automated message. Please do not reply to this email.</p>\n        <p>Event ID: {{ $json.id }}</p>\n    </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        140,
+        -20
+      ],
+      "id": "ddeef5dd-03e5-47df-a427-c0ce5c4df58b",
+      "name": "Send a message",
+      "webhookId": "f6130390-ebac-4937-b33d-f6f8ece1f95f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "qtxgUHhgMp2LuGaC",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "kabilan2004.app.n8n.cloud",
+            "user-agent": "Python/3.12 aiohttp/3.11.16",
+            "content-length": "133",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "34.59.11.47",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "95f713348500eada-ORD",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "x-forwarded-for": "34.59.11.47, 172.70.126.84",
+            "x-forwarded-host": "kabilan2004.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-42-bd54959cf-2qvkj",
+            "x-is-trusted": "yes",
+            "x-real-ip": "34.59.11.47"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "user_email": "ravichandrankabilan@gmail.com",
+            "date": "2025-07-16",
+            "title": "Group Discussion",
+            "time": "11:00",
+            "duration": "60"
+          },
+          "webhookUrl": "https://kabilan2004.app.n8n.cloud/webhook/schedule meet",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b5113895-9e7f-4cf2-a97f-f50b708ebaef",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "01ddd3510ff8ce2222a0c163e3dcafa081adc4b927dcdc6a74e9d82b10bbade0"
+  },
+  "id": "jj0wrtVu4OMwOeHM",
+  "tags": []
+}
